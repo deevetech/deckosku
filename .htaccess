@@ -1,0 +1,53 @@
+# Project-root guard.
+#
+# Two purposes:
+#   1. When the web host serves files from above /public/ (common on shared
+#      hosting where the user cannot reassign DocumentRoot), redirect all
+#      traffic to /public/ so nothing else leaks.
+#   2. Defence-in-depth: block direct access to dotfiles, the .env file, and
+#      every server-side folder. Even if rewrites are disabled, these rules
+#      ensure config and source code are unreadable from the browser.
+
+# --- 1. Convenience redirect ------------------------------------------------
+# When a host's DocumentRoot points at this project (rather than at /public/),
+# the bare URL is handled by a tiny index.php at the project root that issues
+# a 302 to /public/. The .htaccess rules below only enforce security.
+
+# --- 2. Deny direct access to dotfiles, .env, and source folders ------------
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<Files ".env">
+    Require all denied
+</Files>
+<Files ".env.example">
+    Require all denied
+</Files>
+<Files "composer.json">
+    Require all denied
+</Files>
+<Files "composer.lock">
+    Require all denied
+</Files>
+<Files "*.sqlite">
+    Require all denied
+</Files>
+<Files "*.sqlite-journal">
+    Require all denied
+</Files>
+<Files "*.sqlite-wal">
+    Require all denied
+</Files>
+<Files "*.sqlite-shm">
+    Require all denied
+</Files>
+<Files "*.xlsx">
+    Require all denied
+</Files>
+<Files "*.bak">
+    Require all denied
+</Files>
+
+# Block directory listing.
+Options -Indexes

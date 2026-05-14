@@ -1,0 +1,33 @@
+# Front-controller routing — every request goes to index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the request maps to an existing file or directory in /public, serve it.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Otherwise, pass everything to index.php
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Security & cache headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # When you deploy behind HTTPS, uncomment:
+    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Sensible defaults
+DirectoryIndex index.php index.html
+
+# Block access to dotfiles
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

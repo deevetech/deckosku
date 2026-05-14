@@ -1,0 +1,32 @@
+{
+    "name": "decko/size-management",
+    "description": "DECKO warehouse SKU and size lookup dashboard",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1",
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*",
+        "ext-zip": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-fileinfo": "*",
+        "phpoffice/phpspreadsheet": "^2.3",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "platform-check": false
+    },
+    "scripts": {
+        "import": "php bin/import.php",
+        "reset": "php bin/reset.php",
+        "seed": "php bin/seed.php"
+    }
+}

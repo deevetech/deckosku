@@ -1,0 +1,281 @@
+/*
+ * DECKO Size Management — premium warm light theme.
+ *
+ * Design DNA: cream canvas, near-black ink, one terracotta accent used
+ * surgically (status only), Geist for prose and JetBrains Mono for SKUs and
+ * numbers. Tinted hairlines and warm tinted shadows. Generous whitespace.
+ * No card-with-border-and-shadow soup — surface or no surface, never both.
+ *
+ * Built as a custom layer on top of Tailwind via CDN. The base palette and
+ * type families live here so the rest of the codebase can keep using utility
+ * classes against names that map to brand intent rather than raw colours.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+    /* Surfaces — warm, paper-like. */
+    --paper:        #faf8f5;   /* page canvas — warm cream */
+    --paper-soft:   #f5f2eb;   /* subtle wells */
+    --paper-deep:   #ebe7dd;   /* heavier wells */
+    --surface:      #ffffff;
+    --surface-warm: #fefcf8;
+
+    /* Ink — six steps, cool-leaning near-black so it sits well on warm paper. */
+    --ink:        #18171c;     /* primary text */
+    --ink-soft:   #43424a;     /* secondary text */
+    --ink-mute:   #6b6873;     /* tertiary text */
+    --ink-dim:    #9a96a0;     /* placeholder, disabled */
+    --ink-faint:  #c6c1c5;     /* dividers in light contexts */
+
+    /* Hairlines — warm tint so they match the paper. */
+    --line:       #e8e2d6;
+    --line-soft:  #f0ebde;
+    --line-strong:#d8d2c4;
+
+    /* Single accent — terracotta. Used very sparingly: status, focus,
+       highlight on active selection. Never as a button colour. */
+    --ember:        #c2410c;
+    --ember-soft:   #f4d8c3;
+    --ember-ghost:  rgba(194, 65, 12, 0.06);
+
+    /* Buttons — quiet, ink-driven. */
+    --pill-bg:     #18171c;
+    --pill-bg-hi:  #2a2830;
+    --pill-fg:     #faf8f5;
+
+    /* Tinted shadows — match the paper, never pure black. */
+    --shadow-card:
+        0 1px 0 rgba(24, 23, 28, 0.04),
+        0 6px 16px -8px rgba(60, 40, 20, 0.10);
+    --shadow-pop:
+        0 1px 0 rgba(24, 23, 28, 0.04),
+        0 20px 40px -16px rgba(60, 40, 20, 0.18);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+}
+
+/* The single subtle texture — a fixed grain layer to break digital flatness.
+   Pure CSS noise; no image request needed. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.06  0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Mono everywhere a digit lives. */
+.font-mono, code, kbd, .tabular, table td, table th {
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-feature-settings: "tnum", "zero", "ss01";
+    letter-spacing: 0;
+}
+
+/* Display headlines — Geist Medium, optical adjustments. */
+.headline {
+    font-family: "Geist", system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 0.98;
+    text-wrap: balance;
+}
+
+/* Labels — small caps with tracking, used for section eyebrows. */
+.label {
+    font-family: "Geist", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+}
+
+/* Scrollbar polish. */
+::-webkit-scrollbar              { width: 10px; height: 10px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--ink-faint); border: 2px solid var(--paper); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--ink-dim); }
+
+/* Focus ring — accent ember, square, generous offset. */
+:where(button, a, input, select, textarea):focus-visible {
+    outline: 1.5px solid var(--ember);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Selection — ember ghost. */
+::selection { background: var(--ember-soft); color: var(--ink); }
+
+/* Tactile press. */
+.btn-press { transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1); }
+.btn-press:active { transform: translateY(1px); }
+
+/* Spring-feeling hover for interactive rows. */
+.row-spring { transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1), border-color 160ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Pulse for "live" status dots. */
+@keyframes premium-pulse {
+    0%, 60%   { opacity: 1; transform: scale(1); }
+    65%, 80%  { opacity: 0.35; transform: scale(0.85); }
+}
+.status-pulse { animation: premium-pulse 2.4s ease-in-out infinite; }
+
+/* Caret blink on the hero search bar. */
+@keyframes premium-caret {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+.caret-blink { animation: premium-caret 1.05s steps(1, end) infinite; }
+
+/* Skeleton shimmer — warm. */
+@keyframes premium-shimmer {
+    0%   { background-position: -240px 0; }
+    100% { background-position:  240px 0; }
+}
+.skeleton {
+    background: linear-gradient(90deg,
+        rgba(24, 23, 28, 0.04) 0%,
+        rgba(24, 23, 28, 0.08) 50%,
+        rgba(24, 23, 28, 0.04) 100%);
+    background-size: 480px 100%;
+    animation: premium-shimmer 1.4s linear infinite;
+    color: transparent !important;
+    border-radius: 4px;
+}
+
+/* Staggered fade-up on mount — used on the result list. */
+@keyframes premium-rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.rise > * {
+    animation: premium-rise 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 20ms);
+}
+
+/* Typeahead dropdown — premium floating panel. */
+.typeahead {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow-pop);
+    overflow: hidden;
+}
+.typeahead-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 18px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    cursor: pointer;
+    transition: background-color 100ms ease;
+}
+.typeahead-row:last-child { border-bottom: 0; }
+.typeahead-row:hover,
+.typeahead-row.is-cursor   { background: var(--paper-soft); }
+
+/* Tables — clean hairlines, no card framing. */
+table.lux {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table.lux th {
+    text-align: left;
+    font-family: "Geist", sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+}
+table.lux td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+}
+table.lux tbody tr {
+    cursor: pointer;
+    transition: background-color 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+table.lux tbody tr:hover { background: var(--paper-soft); }
+table.lux tbody tr.is-active {
+    background: var(--ember-ghost);
+}
+table.lux tbody tr.is-active td {
+    border-bottom-color: var(--ember);
+}
+table.lux .num { text-align: right; white-space: nowrap; }
+
+/* Buttons — quiet, ink-first. */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: var(--pill-bg);
+    color: var(--pill-fg);
+    font-weight: 500;
+    font-size: 13px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 160ms, transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pill:hover  { background: var(--pill-bg-hi); }
+.pill:active { transform: translateY(1px); }
+.pill.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+}
+.pill.ghost:hover { background: var(--paper-soft); border-color: var(--line-strong); }
+
+/* Side detail panel slide-in. */
+@keyframes premium-slide {
+    from { transform: translateX(20px); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+.slide-in { animation: premium-slide 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Photo grid placeholders. */
+.photo-empty {
+    background:
+        radial-gradient(circle at 30% 30%, var(--paper-soft), transparent 50%),
+        repeating-linear-gradient(45deg, var(--paper) 0 8px, var(--paper-soft) 8px 16px);
+}
+
+/* Print rules unchanged — labels and spec sheets stay paper-white. */
+@media print {
+    html, body { background: #fff !important; color: #000 !important; }
+    body::before { display: none !important; }
+    .no-print { display: none !important; }
+}
+
+/* x-cloak hides Alpine elements until the framework is mounted. */
+[x-cloak] { display: none !important; }

@@ -1,0 +1,49 @@
+/vendor/
+/node_modules/
+
+.env
+.env.local
+.env.*.local
+
+# SQLite database and runtime data
+/storage/database.sqlite
+/storage/database.sqlite-journal
+/storage/database.sqlite-wal
+/storage/database.sqlite-shm
+/storage/logs/*.log
+/storage/cache/*
+/storage/uploads/*
+/storage/photos/*
+
+# Keep storage subfolders tracked but ignore their contents
+!/storage/logs/.gitkeep
+!/storage/cache/.gitkeep
+!/storage/uploads/.gitkeep
+!/storage/photos/.gitkeep
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# PHP runtime
+*.log
+error_log
+/public/.htaccess.bak
+
+# Excel source (large, distributed separately)
+*.xlsx.bak
+*.bak
+*.bak.*
+
+# Local dev-only helpers
+/public/dev-router.php
+
+# Local snapshot folder used during development
+/.checkpoints/
+
+# Local tool/agent config
+/.claude/
