@@ -25,7 +25,6 @@
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/
 *.swp
 *~
 
@@ -47,3 +46,7 @@ error_log
 
 # Local tool/agent config
 /.claude/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

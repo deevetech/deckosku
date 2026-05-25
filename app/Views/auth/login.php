@@ -30,7 +30,7 @@ use App\Core\View;
                 <p class="uppercase tracking-[0.18em]">Catalogue</p>
                 <p class="mt-1 text-paper/75 text-[13px]">102 · SKUs &nbsp; 7 · categories &nbsp; 340 · photos</p>
             </div>
-            <p class="uppercase tracking-[0.18em]"><?= date('Y') ?> · Bandar Seri Begawan</p>
+            <p class="uppercase tracking-[0.18em]"><?= date('Y') ?> · Brisbane Australia</p>
         </div>
 
         <!-- Decorative grain layer keeps the dark column from feeling sterile. -->
